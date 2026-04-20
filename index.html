@@ -17,27 +17,18 @@
         <section class="resumo-grid">
             <div class="card-resumo glass">
                 <span>💰 Salário Atual</span>
-                <h2 id="salario-total-display">R$ 0,00</h2>
+                <div class="input-inline">
+                    <input type="number" id="saldo-disponivel" placeholder="0,00" step="0.01">
+                    <button onclick="salvarSaldo()" id="btn-saldo">Registrar</button>
+                </div>
             </div>
             <div class="card-resumo glass">
                 <span>💸 Total em Despesas</span>
                 <h2 id="total-geral">R$ 0,00</h2>
             </div>
             <div class="card-resumo glass">
-                <span>📉 Saldo Restante (Após despesas)</span>
+                <span>📉 Saldo Restante</span>
                 <h2 id="saldo-restante">R$ 0,00</h2>
-            </div>
-        </section>
-
-        <section class="config-section glass">
-            <div class="saldo-wrapper">
-                <div class="saldo-field">
-                    <span>💰 SEU SALDO ATUAL (SALÁRIO)</span>
-                    <div class="input-with-button">
-                        <input type="number" id="saldo-disponivel" placeholder="R$ 0,00" step="0.01">
-                        <button onclick="salvarSaldo()" id="btn-saldo">Registrar</button>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -65,7 +56,9 @@
                 </thead>
                 <tbody id="corpo-tabela">
                     <tr>
-                        <td colspan="4" style="text-align:center">Sincronizando com a nuvem...</td>
+                        <td colspan="4" style="text-align:center; color: var(--text-dim);">
+                            Sincronizando dados...
+                        </td>
                     </tr>
                 </tbody>
             </table>
