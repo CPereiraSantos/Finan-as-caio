@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dindin Casinha 🖤</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<h1>Dindin Casinha 🖤</h1>
+<p>Controle financeiro da casa</p>
+</header>
+
+<section class="cards">
+
+<div class="card">
+<span>💰 Salários</span>
+<h2 id="salarios">R$0</h2>
+</div>
+
+<div class="card">
+<span>💸 Contas</span>
+<h2 id="despesas">R$0</h2>
+</div>
+
+<div class="card">
+<span>🏠 Sobra</span>
+<h2 id="sobra">R$0</h2>
+</div>
+
+<div class="card">
+<span>➗ Cada um paga</span>
+<h2 id="divisao">R$0</h2>
+</div>
+
+</section>
+
+<section class="family">
+
+<div class="person">
+<h3 id="pessoa1">Pessoa 1</h3>
+<p id="sobra1">R$0</p>
+</div>
+
+<div class="person">
+<h3 id="pessoa2">Pessoa 2</h3>
+<p id="sobra2">R$0</p>
+</div>
+
+</section>
+
+<!-- ===== NOVAS ABAS PESSOAIS ===== -->
+
+<section class="personal">
+
+<div class="person-box">
+<h2>🧍‍♂️ Pessoal - <span id="titulo1"></span></h2>
+
+<p>Entrada (sobra da casa): <strong id="entrada1">R$0</strong></p>
+<p>Despesas pessoais: <strong id="totalP1">R$0</strong></p>
+<p>Sobra Final: <strong id="final1">R$0</strong></p>
+
+<input id="desc1" placeholder="Descrição">
+<input id="val1" type="number" placeholder="Valor">
+<button onclick="addPessoal(1)">Adicionar</button>
+
+<ul id="lista1"></ul>
+</div>
+
+<div class="person-box">
+<h2>🧍‍♀️ Pessoal - <span id="titulo2"></span></h2>
+
+<p>Entrada (sobra da casa): <strong id="entrada2">R$0</strong></p>
+<p>Despesas pessoais: <strong id="totalP2">R$0</strong></p>
+<p>Sobra Final: <strong id="final2">R$0</strong></p>
+
+<input id="desc2" placeholder="Descrição">
+<input id="val2" type="number" placeholder="Valor">
+<button onclick="addPessoal(2)">Adicionar</button>
+
+<ul id="lista2"></ul>
+</div>
+
+</section>
+
+<section class="form-box">
+
+<h2>💰 Salários</h2>
+
+<input id="nome1" placeholder="Nome 1">
+<input id="valor1" type="number" placeholder="Valor">
+
+<input id="nome2" placeholder="Nome 2">
+<input id="valor2" type="number" placeholder="Valor">
+
+<button onclick="salvarSalarios()">Salvar</button>
+
+</section>
+
+<section class="form-box">
+
+<h2>💸 Nova Conta</h2>
+
+<input id="descricao" placeholder="Descrição">
+<input id="valor" type="number" placeholder="Valor">
+
+<button onclick="addDespesa()">Adicionar</button>
+
+</section>
+
+<section class="lista">
+
+<h2>📋 Contas</h2>
+<ul id="gastos"></ul>
+
+</section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
