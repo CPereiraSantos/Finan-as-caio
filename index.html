@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financeiro Pro</title>
+    <title>Financeiro Pro | Saldo e Despesas</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -11,17 +11,17 @@
     <div class="container">
         <header>
             <h1>Minhas Finanças 💎</h1>
-            <p>Controle simplificado de saldo e despesas</p>
+            <p>Gestão de Saldo e Planeamento de Gastos</p>
         </header>
 
-        <section class="saldo-input-box glass">
-            <div class="input-group-saldo">
-                <div class="field">
-                    <span>💰 Seu Saldo Atual</span>
-                    <input type="number" id="saldo-disponivel" placeholder="R$ 0,00" step="0.01" oninput="calcularRestante()">
+        <section class="saldo-box glass">
+            <div class="saldo-wrapper">
+                <div class="saldo-field">
+                    <span>💰 SEU SALDO ATUAL (SALÁRIO)</span>
+                    <input type="number" id="saldo-disponivel" placeholder="Introduza o valor..." step="0.01" oninput="calcularRestante()">
                 </div>
-                <div class="field result-field">
-                    <span>📉 Saldo Restante (Após despesas)</span>
+                <div class="saldo-resultado">
+                    <span>📉 SALDO RESTANTE</span>
                     <h2 id="saldo-restante">R$ 0,00</h2>
                 </div>
             </div>
@@ -29,16 +29,16 @@
 
         <section class="cards">
             <div class="card glass">
-                <span>Total em Despesas</span>
+                <span>TOTAL EM DESPESAS</span>
                 <h2 id="total-geral">R$ 0,00</h2>
             </div>
         </section>
 
         <section class="form-box glass">
-            <h3>➕ Nova Despesa</h3>
+            <h3>➕ NOVA DESPESA</h3>
             <form id="form-gasto">
                 <div class="input-group">
-                    <input type="text" id="desc" placeholder="Descrição" required>
+                    <input type="text" id="desc" placeholder="Descrição (Ex: Renda)" required>
                     <input type="number" id="valor" placeholder="Valor" step="0.01" required>
                     <input type="date" id="data" required>
                     <button type="submit" id="btn-salvar">Adicionar</button>
@@ -48,7 +48,7 @@
 
         <section class="lista-container glass">
             <div id="conteudo">
-                <p>Sincronizando dados...</p>
+                <p>A sincronizar com a nuvem...</p>
             </div>
         </section>
     </div>
