@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Financeiro Pro | Saldo e Despesas</title>
+    <title>Financeiro Pro | Caio & Victoria</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
@@ -14,34 +14,41 @@
             <p>Gestão de Saldo e Planeamento de Gastos</p>
         </header>
 
-        <section class="saldo-box glass">
-            <div class="saldo-wrapper">
-                <div class="saldo-field">
-                    <span>💰 SEU SALDO ATUAL (SALÁRIO)</span>
-                    <div class="input-with-button">
-                        <input type="number" id="saldo-disponivel" placeholder="0,00" step="0.01">
-                        <button onclick="salvarSaldo()" id="btn-saldo">Registrar</button>
-                    </div>
-                </div>
-                <div class="saldo-resultado">
-                    <span>📉 SALDO RESTANTE</span>
-                    <h2 id="saldo-restante">R$ 0,00</h2>
-                </div>
+        <section class="resumo-cards">
+            <div class="card glass">
+                <span>💰 SALÁRIOS TOTAIS</span>
+                <h2 id="salario-total-display">R$ 0,00</h2>
+            </div>
+            <div class="card glass">
+                <span>💸 CONTAS DO MÊS</span>
+                <h2 id="total-geral">R$ 0,00</h2>
+            </div>
+            <div class="card glass">
+                <span>🏠 SOBRA DA CASA</span>
+                <h2 id="saldo-restante">R$ 0,00</h2>
             </div>
         </section>
 
-        <section class="cards">
-            <div class="card glass">
-                <span>TOTAL EM DESPESAS</span>
-                <h2 id="total-geral">R$ 0,00</h2>
+        <section class="saldo-box glass">
+            <h3>💰 Salários Fixos</h3>
+            <div class="input-row">
+                <div class="field">
+                    <span>Caio</span>
+                    <input type="number" id="salario-caio" placeholder="Salário Caio" step="0.01">
+                </div>
+                <div class="field">
+                    <span>Victoria</span>
+                    <input type="number" id="salario-victoria" placeholder="Salário Victoria" step="0.01">
+                </div>
             </div>
+            <button onclick="salvarSaldo()" id="btn-saldo" class="btn-primary">Salvar</button>
         </section>
 
         <section class="form-box glass">
-            <h3>➕ NOVA DESPESA</h3>
+            <h3>💸 Nova Conta</h3>
             <form id="form-gasto">
                 <div class="input-group">
-                    <input type="text" id="desc" placeholder="Descrição" required>
+                    <input type="text" id="desc" placeholder="Descrição (Ex: Luz, Aluguer)" required>
                     <input type="number" id="valor" placeholder="Valor" step="0.01" required>
                     <input type="date" id="data" required>
                     <button type="submit" id="btn-salvar">Adicionar</button>
@@ -50,9 +57,20 @@
         </section>
 
         <section class="lista-container glass">
-            <div id="conteudo">
-                <p>A sincronizar dados...</p>
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>DESPESA</th>
+                        <th>VALOR</th>
+                        <th style="text-align:right">AÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody id="corpo-tabela">
+                    <tr>
+                        <td colspan="3" style="text-align:center">A carregar dados...</td>
+                    </tr>
+                </tbody>
+            </table>
         </section>
     </div>
     <script src="script.js"></script>

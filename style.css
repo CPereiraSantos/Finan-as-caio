@@ -28,3 +28,27 @@ button { background: var(--accent); color: white; border: none; padding: 10px 20
 table { width: 100%; border-collapse: collapse; }
 td, th { padding: 12px; border-bottom: 1px solid var(--glass-border); text-align: left; }
 .btn-del { background: none; border: 1px solid var(--red); color: var(--red); padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+
+.actions-cell {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.btn-edit {
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.edit-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--accent);
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+    width: 90%;
+}
