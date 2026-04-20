@@ -2,123 +2,21 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dindin Casinha 🖤</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dindin Casinha</title>
 <link rel="stylesheet" href="style.css">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-
 <body>
-
-<div class="container">
-
-<header>
-<h1>Dindin Casinha 🖤</h1>
-<p>Caio & Victoria</p>
-</header>
-
-<section class="cards">
-
-<div class="card">
-<span>💰 Salários Totais</span>
-<h2 id="salarios">R$ 0,00</h2>
+<div class="wrap">
+<h1>Dindin Casinha</h1>
+<nav class="tabs">
+<button class="tab active" onclick="trocarAba('geral',this)">Geral</button>
+<button class="tab" onclick="trocarAba('caio',this)">Caio</button>
+<button class="tab" onclick="trocarAba('victoria',this)">Victoria</button>
+</nav>
+<div id="resumo"></div>
+<div id="conteudo"></div>
 </div>
-
-<div class="card">
-<span>💸 Contas do Mês</span>
-<h2 id="despesas">R$ 0,00</h2>
-</div>
-
-<div class="card">
-<span>🏠 Sobra da Casa</span>
-<h2 id="sobra">R$ 0,00</h2>
-</div>
-
-<div class="card">
-<span>➗ Cada um paga</span>
-<h2 id="divisao">R$ 0,00</h2>
-</div>
-
-</section>
-
-<section class="family">
-
-<div class="person">
-<h3>Caio</h3>
-<p>Salário: <span id="salCaio">R$ 0,00</span></p>
-<p>Sobra Casa: <span id="caioSobra">R$ 0,00</span></p>
-<p>Sobra Final: <span id="caioFinal">R$ 0,00</span></p>
-</div>
-
-<div class="person">
-<h3>Victoria</h3>
-<p>Salário: <span id="salVictoria">R$ 0,00</span></p>
-<p>Sobra Casa: <span id="vicSobra">R$ 0,00</span></p>
-<p>Sobra Final: <span id="vicFinal">R$ 0,00</span></p>
-</div>
-
-</section>
-
-<!-- ===== FINANÇAS PESSOAIS ===== -->
-
-<section class="family">
-
-<div class="person">
-<h3>Despesas Pessoais - Caio</h3>
-
-<input type="text" id="descCaio" placeholder="Descrição">
-<input type="number" id="valorCaioP" placeholder="Valor">
-<button onclick="addPessoal('caio')">Adicionar</button>
-
-<ul id="listaCaio"></ul>
-</div>
-
-<div class="person">
-<h3>Despesas Pessoais - Victoria</h3>
-
-<input type="text" id="descVictoria" placeholder="Descrição">
-<input type="number" id="valorVictoriaP" placeholder="Valor">
-<button onclick="addPessoal('victoria')">Adicionar</button>
-
-<ul id="listaVictoria"></ul>
-</div>
-
-</section>
-
-<section class="form-box">
-
-<h2>💰 Salários Fixos</h2>
-
-<input type="number" id="salarioCaio" placeholder="Salário Caio">
-<input type="number" id="salarioVictoria" placeholder="Salário Victoria">
-
-<button onclick="salvarSalarios()">Salvar</button>
-
-</section>
-
-<section class="form-box">
-
-<h2>💸 Nova Conta</h2>
-
-<input type="text" id="descricao" placeholder="Descrição">
-<input type="number" id="valor" placeholder="Valor">
-
-<button onclick="addDespesa()">Salvar Conta</button>
-
-</section>
-
-<section class="lista">
-
-<h2>📋 Contas</h2>
-<ul id="gastos"></ul>
-
-</section>
-
-</div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
