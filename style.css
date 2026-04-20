@@ -1,36 +1,28 @@
-/* Estilos para a nova janela de saldo */
-.saldo-input-box {
-    padding: 25px;
-    margin-bottom: 20px;
-    border: 1px solid rgba(99, 102, 241, 0.3); /* Destaque em roxo suave */
-}
-
-.saldo-input-box .input-group {
+/* Ajuste na janela de saldo para ocupar bem o espaço */
+.input-group-saldo {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 }
 
-.field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    flex: 1;
+.result-field h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
 }
 
-.field span {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    font-weight: 600;
-    text-transform: uppercase;
+/* Tabela sem a coluna de status */
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; padding: 20px; color: var(--text-dim); border-bottom: 1px solid var(--glass-border); }
+td { padding: 20px; border-bottom: 1px solid var(--glass-border); }
+
+.btn-del { 
+    background: rgba(239, 68, 68, 0.1); 
+    border: 1px solid #ef4444; 
+    color: #ef4444; 
+    padding: 8px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: 0.2s;
 }
-
-.result-field {
-    text-align: right;
-    border-left: 1px solid var(--glass-border);
-    padding-left: 30px;
-}
-
-.text-white { color: #fff; }
-
-/* Mantém os estilos anteriores abaixo... */
+.btn-del:hover { background: #ef4444; color: white; }

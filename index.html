@@ -11,18 +11,18 @@
     <div class="container">
         <header>
             <h1>Minhas Finanças 💎</h1>
-            <p>Controle pessoal de gastos e rendimentos</p>
+            <p>Controle simplificado de saldo e despesas</p>
         </header>
 
         <section class="saldo-input-box glass">
-            <div class="input-group">
+            <div class="input-group-saldo">
                 <div class="field">
-                    <span>💰 Saldo Disponível (Onde será retirado)</span>
+                    <span>💰 Seu Saldo Atual</span>
                     <input type="number" id="saldo-disponivel" placeholder="R$ 0,00" step="0.01" oninput="calcularRestante()">
                 </div>
                 <div class="field result-field">
                     <span>📉 Saldo Restante (Após despesas)</span>
-                    <h2 id="saldo-restante" class="text-white">R$ 0,00</h2>
+                    <h2 id="saldo-restante">R$ 0,00</h2>
                 </div>
             </div>
         </section>
@@ -32,18 +32,10 @@
                 <span>Total em Despesas</span>
                 <h2 id="total-geral">R$ 0,00</h2>
             </div>
-            <div class="card glass">
-                <span>Total Pago</span>
-                <h2 id="total-pago" class="text-green">R$ 0,00</h2>
-            </div>
-            <div class="card glass">
-                <span>Total Pendente</span>
-                <h2 id="total-pendente" class="text-orange">R$ 0,00</h2>
-            </div>
         </section>
 
         <section class="form-box glass">
-            <h3>➕ Novo Lançamento</h3>
+            <h3>➕ Nova Despesa</h3>
             <form id="form-gasto">
                 <div class="input-group">
                     <input type="text" id="desc" placeholder="Descrição" required>
