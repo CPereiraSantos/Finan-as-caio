@@ -3,35 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meus Gastos Pessoais</title>
+    <title>Financeiro Pro</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="sidebar">
-        <h2>💰 Finanças</h2>
-        <a href="index.html" class="active">📊 Meus Gastos</a>
-    </div>
-    <div class="main">
-        <h1>Controle de Gastos Pessoais</h1>
-        
-        <div id="cards" class="cards">
-            <div class="card">
-                <h3>Total em Despesas</h3>
-                <p id="total-gasto" style="color: #ef4444">R$ 0,00</p>
-            </div>
-            <div class="card">
-                <h3>Total Pago</h3>
-                <p id="total-pago" style="color: #10b981">R$ 0,00</p>
-            </div>
-            <div class="card">
-                <h3>Pendente</h3>
-                <p id="total-pendente" style="color: #f59e0b">R$ 0,00</p>
-            </div>
-        </div>
+    <div class="container">
+        <header>
+            <h1>Minhas Finanças 💎</h1>
+            <p>Controle pessoal de gastos e rendimentos</p>
+        </header>
 
-        <div id="conteudo">
-            <p>Carregando dados da planilha...</p>
-        </div>
+        <section class="cards">
+            <div class="card glass">
+                <span>Saldo Total</span>
+                <h2 id="total-geral">R$ 0,00</h2>
+            </div>
+            <div class="card glass">
+                <span>Pago</span>
+                <h2 id="total-pago" class="text-green">R$ 0,00</h2>
+            </div>
+            <div class="card glass">
+                <span>Pendente</span>
+                <h2 id="total-pendente" class="text-orange">R$ 0,00</h2>
+            </div>
+        </section>
+
+        <section class="form-box glass">
+            <h3>➕ Novo Lançamento</h3>
+            <form id="form-gasto">
+                <div class="input-group">
+                    <input type="text" id="desc" placeholder="Descrição" required>
+                    <input type="number" id="valor" placeholder="Valor" step="0.01" required>
+                    <input type="date" id="data" required>
+                    <button type="submit" id="btn-salvar">Adicionar</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="lista-container glass">
+            <div id="conteudo">
+                <p>Sincronizando dados...</p>
+            </div>
+        </section>
     </div>
     <script src="script.js"></script>
 </body>

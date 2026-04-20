@@ -1,59 +1,71 @@
-// Coloque aqui a URL da sua implantação do Google Apps Script
 const API_URL = 'https://script.google.com/macros/s/AKfycbxd6UZtC_DB3lTrvENxgubuIXmwickgRnTJsr01tZ76aJ3OJbb3EI3R-wN4tPCiuiCo/exec';
 
 const moeda = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-async function buscarDados() {
+async function carregar() {
     try {
-        const resposta = await fetch(API_URL);
-        const dados = await resposta.json();
-        // Usa a aba DESPESAS da sua planilha
-        renderizar(dados.despesas);
-    } catch (erro) {
-        document.getElementById('conteudo').innerHTML = "<p style='color:red'>Erro ao conectar com a planilha.</p>";
+        const r = await fetch(API_URL);
+        const dados = await r.json();
+        render(dados);
+    } catch (e) {
+        document.getElementById('conteudo').innerHTML = "<p>Erro na conexão.</p>";
     }
 }
 
-function renderizar(lista) {
-    // Cálculos baseados na coluna VALOR e STATUS
-    const totalGeral = lista.reduce((acc, i) => acc + Number(i.valor || 0), 0);
-    const totalPago = lista.filter(i => i.status?.toUpperCase() === 'PAGO')
-                           .reduce((acc, i) => acc + Number(i.valor || 0), 0);
-    const totalPendente = totalGeral - totalPago;
+document.getElementById('form-gasto').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-salvar');
+    btn.innerText = "⌛";
+    
+    const obj = {
+        acao: "ADICIONAR",
+        despesa: document.getElementById('desc').value,
+        valor: document.getElementById('valor').value,
+        vencimento: document.getElementById('data').value,
+        status: "PENDENTE"
+    };
 
-    document.getElementById('total-gasto').innerText = moeda(totalGeral);
-    document.getElementById('total-pago').innerText = moeda(totalPago);
-    document.getElementById('total-pendente').innerText = moeda(totalPendente);
+    await fetch(API_URL, { method: 'POST', body: JSON.stringify(obj) });
+    e.target.reset();
+    btn.innerText = "Adicionar";
+    carregar();
+});
 
-    let html = `
-        <table>
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Vencimento</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
+async function mudarStatus(id, atual) {
+    const novo = atual === "PAGO" ? "PENDENTE" : "PAGO";
+    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ acao: "EDITAR_STATUS", id, novoStatus: novo })});
+    carregar();
+}
 
-    lista.forEach(item => {
-        const status = (item.status || 'PENDENTE').toUpperCase();
-        const classeStatus = status === 'PAGO' ? 'status-pago' : 'status-pendente';
-        
+async function deletar(id) {
+    if(confirm("Excluir?")) {
+        await fetch(API_URL, { method: 'POST', body: JSON.stringify({ acao: "DELETAR", id })});
+        carregar();
+    }
+}
+
+function render(lista) {
+    const total = lista.reduce((a, b) => a + Number(b.valor), 0);
+    const pago = lista.filter(i => i.status === "PAGO").reduce((a, b) => a + Number(b.valor), 0);
+
+    document.getElementById('total-geral').innerText = moeda(total);
+    document.getElementById('total-pago').innerText = moeda(pago);
+    document.getElementById('total-pendente').innerText = moeda(total - pago);
+
+    let html = `<table><thead><tr><th>Descrição</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>`;
+    
+    lista.reverse().forEach(i => {
         html += `
             <tr>
-                <td>${item.despesa || 'Sem descrição'}</td>
-                <td>${moeda(item.valor)}</td>
-                <td>${item.vencimento || '-'}</td>
-                <td class="${classeStatus}">${status}</td>
+                <td><strong>${i.despesa}</strong><br><small style="color:gray">${i.vencimento || ''}</small></td>
+                <td>${moeda(i.valor)}</td>
+                <td><button onclick="mudarStatus(${i.id}, '${i.status}')" class="status-btn ${i.status}">${i.status}</button></td>
+                <td><button onclick="deletar(${i.id})" class="btn-del">🗑️</button></td>
             </tr>
         `;
     });
 
-    html += '</tbody></table>';
-    document.getElementById('conteudo').innerHTML = html;
+    document.getElementById('conteudo').innerHTML = html + "</tbody></table>";
 }
 
-buscarDados();
+carregar();
