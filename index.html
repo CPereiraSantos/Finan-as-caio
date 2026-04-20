@@ -1,28 +1,22 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang='pt-BR'>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Dindin Casinha</title>
-<link rel="stylesheet" href="style.css">
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>Finanças Casinha</title>
+<link rel='stylesheet' href='style.css'>
 </head>
 <body>
-<div class="wrap">
-<h1>Dindin Casinha</h1>
-<nav class="tabs">
-<a href="index.html" class="tab active">🏠 Geral</a>
-<div class="dropdown">
-<button class="tab">☰ Menu</button>
-<div class="dropdown-content">
-<a href="caio.html">👨 Caio</a>
-<a href="victoria.html">👩 Victoria</a>
-</div>
-</div>
-</nav>
-<div id="resumo"></div>
-<div id="conteudo"></div>
-</div>
-<script>const PAGINA='geral';</script>
-<script src="script.js"></script>
-</body>
-</html>
+    <div class="sidebar">
+        <h2>🏠 Casinha</h2>
+        <a href="index.html">📊 Geral</a>
+        <a href="caio.html">👨 Caio</a>
+        <a href="victoria.html">👩 Victoria</a>
+    </div>
+    <div class="main">
+        <h1>Resumo Geral</h1>
+        <div id="cards" class="cards"></div> <div id="conteudo"></div>
+    </div>
+    <script>const PAGINA='geral';</script>
+    <script src="script.js"></script>
+</body></html>
