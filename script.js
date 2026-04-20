@@ -1,72 +1,59 @@
-const API_URL = 'https://script.google.com/macros/s/AKfycby9vpt36jhnjbAIPqM1mDde4kY5IWN8UXyXrFeVk2uz75lt1S5wRlDw78ryq6qRMR4/exec';
+// Coloque aqui a URL da sua implantação do Google Apps Script
+const API_URL = 'https://script.google.com/macros/s/AKfycbxd6UZtC_DB3lTrvENxgubuIXmwickgRnTJsr01tZ76aJ3OJbb3EI3R-wN4tPCiuiCo/exec';
 
-let dados = { despesas: [], pessoais: [], salarios: [] };
+const moeda = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-const moeda = v => Number(v || 0).toLocaleString('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-});
-
-async function carregar() {
+async function buscarDados() {
     try {
-        const r = await fetch(API_URL);
-        dados = await r.json();
-        render();
+        const resposta = await fetch(API_URL);
+        const dados = await resposta.json();
+        // Usa a aba DESPESAS da sua planilha
+        renderizar(dados.despesas);
     } catch (erro) {
-        console.error("Erro ao carregar:", erro);
-        document.body.innerHTML += `<div style="color:red;padding:20px;text-align:center">Erro ao conectar com a planilha. Verifique se o App Script está publicado como 'Web App' e acessível para 'Anyone'.</div>`;
+        document.getElementById('conteudo').innerHTML = "<p style='color:red'>Erro ao conectar com a planilha.</p>";
     }
 }
 
-function render() {
-    // Busca os elementos dependendo do HTML que estiver aberto
-    const containerCards = document.getElementById('cards') || document.getElementById('resumo');
-    const containerConteudo = document.getElementById('conteudo');
+function renderizar(lista) {
+    // Cálculos baseados na coluna VALOR e STATUS
+    const totalGeral = lista.reduce((acc, i) => acc + Number(i.valor || 0), 0);
+    const totalPago = lista.filter(i => i.status?.toUpperCase() === 'PAGO')
+                           .reduce((acc, i) => acc + Number(i.valor || 0), 0);
+    const totalPendente = totalGeral - totalPago;
 
-    if (!containerCards || !containerConteudo) return;
+    document.getElementById('total-gasto').innerText = moeda(totalGeral);
+    document.getElementById('total-pago').innerText = moeda(totalPago);
+    document.getElementById('total-pendente').innerText = moeda(totalPendente);
 
-    if (PAGINA === 'geral') {
-        renderGeral(containerCards, containerConteudo);
-    } else {
-        renderPessoal(PAGINA, containerCards, containerConteudo);
-    }
-}
-
-function renderGeral(cards, cont) {
-    const totalGeral = dados.despesas.reduce((acc, d) => acc + Number(d.valor || 0), 0);
-    cards.innerHTML = `
-        <div class="card">
-            <h3>Gasto Total</h3>
-            <p style="font-size: 1.5rem; color: #ef4444">${moeda(totalGeral)}</p>
-        </div>
-    `;
-    
-    let html = '<table><thead><tr><th>Descrição</th><th>Valor</th><th>Vencimento</th></tr></thead><tbody>';
-    dados.despesas.forEach(d => {
-        html += `<tr><td>${d.descricao}</td><td>${moeda(d.valor)}</td><td>${d.vencimento || '-'}</td></tr>`;
-    });
-    html += '</tbody></table>';
-    cont.innerHTML = html;
-}
-
-function renderPessoal(nome, cards, cont) {
-    // Filtra gastos específicos da pessoa (ajuste os nomes das colunas conforme sua planilha)
-    const gastosPessoais = dados.pessoais.filter(p => p.responsavel?.toLowerCase() === nome.toLowerCase());
-    const total = gastosPessoais.reduce((acc, p) => acc + Number(p.valor || 0), 0);
-
-    cards.innerHTML = `
-        <div class="card">
-            <h3>Meus Gastos</h3>
-            <p style="font-size: 1.5rem;">${moeda(total)}</p>
-        </div>
+    let html = `
+        <table>
+            <thead>
+                <tr>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                    <th>Vencimento</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
     `;
 
-    let html = '<table><thead><tr><th>Item</th><th>Valor</th></tr></thead><tbody>';
-    gastosPessoais.forEach(p => {
-        html += `<tr><td>${p.item || p.descricao}</td><td>${moeda(p.valor)}</td></tr>`;
+    lista.forEach(item => {
+        const status = (item.status || 'PENDENTE').toUpperCase();
+        const classeStatus = status === 'PAGO' ? 'status-pago' : 'status-pendente';
+        
+        html += `
+            <tr>
+                <td>${item.despesa || 'Sem descrição'}</td>
+                <td>${moeda(item.valor)}</td>
+                <td>${item.vencimento || '-'}</td>
+                <td class="${classeStatus}">${status}</td>
+            </tr>
+        `;
     });
+
     html += '</tbody></table>';
-    cont.innerHTML = html;
+    document.getElementById('conteudo').innerHTML = html;
 }
 
-carregar();
+buscarDados();
