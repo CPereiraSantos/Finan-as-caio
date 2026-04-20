@@ -3,25 +3,26 @@ let totalDespesasGlobal = 0;
 
 const moeda = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
-// SALVAR O SALDO NA PLANILHA (ABA CONFIG)
 async function salvarSaldo() {
     const valor = document.getElementById('saldo-disponivel').value;
     const btn = document.getElementById('btn-saldo');
     btn.innerText = "⌛";
     
-    await fetch(API_URL, {
-        method: 'POST',
-        body: JSON.stringify({ acao: "SALVAR_SALDO", valor: valor })
-    });
-    
-    btn.innerText = "Salvo!";
-    setTimeout(() => btn.innerText = "Registrar", 2000);
-    carregar(); 
+    try {
+        await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ acao: "SALVAR_SALDO", valor: valor })
+        });
+        btn.innerText = "OK!";
+        setTimeout(() => btn.innerText = "Registar", 2000);
+        carregar(); 
+    } catch (e) {
+        btn.innerText = "Erro";
+    }
 }
 
-function calcularRestante() {
-    const inputVal = Number(document.getElementById('saldo-disponivel').value) || 0;
-    const restante = inputVal - totalDespesasGlobal;
+function calcularRestante(saldoBase) {
+    const restante = saldoBase - totalDespesasGlobal;
     const el = document.getElementById('saldo-restante');
     el.innerText = moeda(restante);
     el.style.color = restante < 0 ? "#ef4444" : "#10b981";
@@ -32,11 +33,12 @@ async function carregar() {
         const r = await fetch(API_URL);
         const res = await r.json();
         
-        // Preenche o input com o saldo que está salvo na planilha
-        document.getElementById('saldo-disponivel').value = res.saldoInicial || 0;
-        renderizar(res.despesas || []);
+        const saldoDaPlanilha = Number(res.saldoInicial) || 0;
+        document.getElementById('saldo-disponivel').value = saldoDaPlanilha;
+        
+        renderizar(res.despesas || [], saldoDaPlanilha);
     } catch (e) {
-        console.error("Erro ao carregar:", e);
+        console.error("Erro:", e);
     }
 }
 
@@ -48,8 +50,7 @@ document.getElementById('form-gasto').addEventListener('submit', async (e) => {
     const obj = {
         acao: "ADICIONAR",
         despesa: document.getElementById('desc').value,
-        valor: document.getElementById('valor').value,
-        vencimento: document.getElementById('data').value
+        valor: document.getElementById('valor').value
     };
 
     await fetch(API_URL, { method: 'POST', body: JSON.stringify(obj) });
@@ -59,21 +60,21 @@ document.getElementById('form-gasto').addEventListener('submit', async (e) => {
 });
 
 async function deletar(id) {
-    if(!confirm("Excluir despesa?")) return;
+    if(!confirm("Excluir?")) return;
     await fetch(API_URL, { method: 'POST', body: JSON.stringify({ acao: "DELETAR", id })});
     carregar();
 }
 
-function renderizar(lista) {
+function renderizar(lista, saldoBase) {
     totalDespesasGlobal = lista.reduce((acc, item) => acc + Number(item.valor || 0), 0);
     document.getElementById('total-geral').innerText = moeda(totalDespesasGlobal);
     
-    calcularRestante();
+    calcularRestante(saldoBase);
 
     let html = `<table><thead><tr><th>DESPESA</th><th>VALOR</th><th></th></tr></thead><tbody>`;
     lista.reverse().forEach(item => {
         html += `<tr>
-            <td><strong>${item.despesa}</strong><br><small style="color:gray">${item.vencimento ? new Date(item.vencimento).toLocaleDateString('pt-BR') : ''}</small></td>
+            <td><strong>${item.despesa}</strong></td>
             <td>${moeda(item.valor)}</td>
             <td style="text-align:right"><button onclick="deletar(${item.id})" class="btn-del">🗑️</button></td>
         </tr>`;
