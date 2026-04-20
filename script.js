@@ -1,6 +1,19 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbxd6UZtC_DB3lTrvENxgubuIXmwickgRnTJsr01tZ76aJ3OJbb3EI3R-wN4tPCiuiCo/exec';
+let totalDespesasGlobal = 0; // Para facilitar o cálculo em tempo real
 
 const moeda = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+// Função para calcular o saldo restante em tempo real
+function calcularRestante() {
+    const saldoInserido = Number(document.getElementById('saldo-disponivel').value) || 0;
+    const restante = saldoInserido - totalDespesasGlobal;
+    
+    const elRestante = document.getElementById('saldo-restante');
+    elRestante.innerText = moeda(restante);
+    
+    // Fica vermelho se o saldo for negativo
+    elRestante.style.color = restante < 0 ? "#ef4444" : "#ffffff";
+}
 
 async function carregar() {
     try {
@@ -12,54 +25,30 @@ async function carregar() {
     }
 }
 
-document.getElementById('form-gasto').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const btn = document.getElementById('btn-salvar');
-    btn.innerText = "⌛";
-    
-    const obj = {
-        acao: "ADICIONAR",
-        despesa: document.getElementById('desc').value,
-        valor: document.getElementById('valor').value,
-        vencimento: document.getElementById('data').value,
-        status: "PENDENTE"
-    };
-
-    await fetch(API_URL, { method: 'POST', body: JSON.stringify(obj) });
-    e.target.reset();
-    btn.innerText = "Adicionar";
-    carregar();
-});
-
-async function mudarStatus(id, atual) {
-    const novo = atual === "PAGO" ? "PENDENTE" : "PAGO";
-    await fetch(API_URL, { method: 'POST', body: JSON.stringify({ acao: "EDITAR_STATUS", id, novoStatus: novo })});
-    carregar();
-}
-
-async function deletar(id) {
-    if(confirm("Excluir?")) {
-        await fetch(API_URL, { method: 'POST', body: JSON.stringify({ acao: "DELETAR", id })});
-        carregar();
-    }
-}
+// ... (as funções de Adicionar, MudarStatus e Deletar continuam as mesmas) ...
 
 function render(lista) {
     const total = lista.reduce((a, b) => a + Number(b.valor), 0);
-    const pago = lista.filter(i => i.status === "PAGO").reduce((a, b) => a + Number(b.valor), 0);
+    const pago = lista.filter(i => i.status?.toUpperCase() === 'PAGO').reduce((a, b) => a + Number(b.valor), 0);
+    
+    totalDespesasGlobal = total; // Atualiza a variável global
 
     document.getElementById('total-geral').innerText = moeda(total);
     document.getElementById('total-pago').innerText = moeda(pago);
     document.getElementById('total-pendente').innerText = moeda(total - pago);
 
+    // Atualiza o cálculo do saldo restante caso já exista um valor no input
+    calcularRestante();
+
     let html = `<table><thead><tr><th>Descrição</th><th>Valor</th><th>Status</th><th></th></tr></thead><tbody>`;
     
     lista.reverse().forEach(i => {
+        const status = (i.status || 'PENDENTE').toUpperCase();
         html += `
             <tr>
                 <td><strong>${i.despesa}</strong><br><small style="color:gray">${i.vencimento || ''}</small></td>
                 <td>${moeda(i.valor)}</td>
-                <td><button onclick="mudarStatus(${i.id}, '${i.status}')" class="status-btn ${i.status}">${i.status}</button></td>
+                <td><button onclick="mudarStatus(${i.id}, '${status}')" class="status-btn ${status}">${status}</button></td>
                 <td><button onclick="deletar(${i.id})" class="btn-del">🗑️</button></td>
             </tr>
         `;

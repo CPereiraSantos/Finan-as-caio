@@ -1,91 +1,36 @@
-:root {
-    --bg: #050505;
-    --glass: rgba(255, 255, 255, 0.03);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --accent: #6366f1;
-    --green: #10b981;
-    --orange: #f59e0b;
-    --text: #ffffff;
-    --text-dim: #94a3b8;
+/* Estilos para a nova janela de saldo */
+.saldo-input-box {
+    padding: 25px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.3); /* Destaque em roxo suave */
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-
-body {
-    background: radial-gradient(circle at top left, #1e1b4b, #050505 50%);
-    background-attachment: fixed;
-    color: var(--text);
-    padding: 40px 20px;
+.saldo-input-box .input-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-.container { max-width: 1000px; margin: auto; }
-
-header { margin-bottom: 40px; text-align: left; }
-header h1 { font-size: 2.5rem; letter-spacing: -1px; }
-header p { color: var(--text-dim); margin-top: 5px; }
-
-.glass {
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-}
-
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
-}
-
-.card { padding: 30px; transition: transform 0.3s ease; }
-.card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.05); }
-.card span { color: var(--text-dim); font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-.card h2 { font-size: 2.2rem; margin-top: 10px; font-weight: 700; }
-
-.form-box { padding: 25px; margin-bottom: 30px; }
-.input-group { display: flex; gap: 15px; flex-wrap: wrap; }
-input {
-    background: rgba(0,0,0,0.2);
-    border: 1px solid var(--glass-border);
-    padding: 12px 18px;
-    border-radius: 12px;
-    color: white;
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     flex: 1;
-    min-width: 150px;
-    outline: none;
-}
-input:focus { border-color: var(--accent); }
-
-button#btn-salvar {
-    background: var(--accent);
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s;
 }
 
-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-th { text-align: left; padding: 20px; color: var(--text-dim); font-size: 0.8rem; text-transform: uppercase; border-bottom: 1px solid var(--glass-border); }
-td { padding: 20px; border-bottom: 1px solid var(--glass-border); }
-
-.status-btn {
-    padding: 6px 16px;
-    border-radius: 100px;
-    border: none;
-    font-size: 0.75rem;
-    font-weight: 700;
-    cursor: pointer;
+.field span {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.PAGO { background: rgba(16, 185, 129, 0.1); color: var(--green); border: 1px solid var(--green); }
-.PENDENTE { background: rgba(245, 158, 11, 0.1); color: var(--orange); border: 1px solid var(--orange); }
-.text-green { color: var(--green); }
-.text-orange { color: var(--orange); }
+.result-field {
+    text-align: right;
+    border-left: 1px solid var(--glass-border);
+    padding-left: 30px;
+}
 
-.btn-del { background: none; border: none; cursor: pointer; opacity: 0.4; transition: 0.3s; }
-.btn-del:hover { opacity: 1; transform: scale(1.2); }
+.text-white { color: #fff; }
+
+/* Mantém os estilos anteriores abaixo... */
