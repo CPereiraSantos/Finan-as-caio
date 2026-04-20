@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dindin Casinha 🖤</title>
+
 <link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -13,29 +16,29 @@
 
 <header>
 <h1>Dindin Casinha 🖤</h1>
-<p>Controle financeiro da casa</p>
+<p>Caio & Victoria</p>
 </header>
 
 <section class="cards">
 
 <div class="card">
-<span>💰 Salários</span>
-<h2 id="salarios">R$0</h2>
+<span>💰 Salários Totais</span>
+<h2 id="salarios">R$ 0,00</h2>
 </div>
 
 <div class="card">
-<span>💸 Contas</span>
-<h2 id="despesas">R$0</h2>
+<span>💸 Contas do Mês</span>
+<h2 id="despesas">R$ 0,00</h2>
 </div>
 
 <div class="card">
-<span>🏠 Sobra</span>
-<h2 id="sobra">R$0</h2>
+<span>🏠 Sobra da Casa</span>
+<h2 id="sobra">R$ 0,00</h2>
 </div>
 
 <div class="card">
 <span>➗ Cada um paga</span>
-<h2 id="divisao">R$0</h2>
+<h2 id="divisao">R$ 0,00</h2>
 </div>
 
 </section>
@@ -43,60 +46,53 @@
 <section class="family">
 
 <div class="person">
-<h3 id="pessoa1">Pessoa 1</h3>
-<p id="sobra1">R$0</p>
+<h3>Caio</h3>
+<p>Salário: <span id="salCaio">R$ 0,00</span></p>
+<p>Sobra Casa: <span id="caioSobra">R$ 0,00</span></p>
+<p>Sobra Final: <span id="caioFinal">R$ 0,00</span></p>
 </div>
 
 <div class="person">
-<h3 id="pessoa2">Pessoa 2</h3>
-<p id="sobra2">R$0</p>
+<h3>Victoria</h3>
+<p>Salário: <span id="salVictoria">R$ 0,00</span></p>
+<p>Sobra Casa: <span id="vicSobra">R$ 0,00</span></p>
+<p>Sobra Final: <span id="vicFinal">R$ 0,00</span></p>
 </div>
 
 </section>
 
-<!-- ===== NOVAS ABAS PESSOAIS ===== -->
+<!-- ===== FINANÇAS PESSOAIS ===== -->
 
-<section class="personal">
+<section class="family">
 
-<div class="person-box">
-<h2>🧍‍♂️ Pessoal - <span id="titulo1"></span></h2>
+<div class="person">
+<h3>Despesas Pessoais - Caio</h3>
 
-<p>Entrada (sobra da casa): <strong id="entrada1">R$0</strong></p>
-<p>Despesas pessoais: <strong id="totalP1">R$0</strong></p>
-<p>Sobra Final: <strong id="final1">R$0</strong></p>
+<input type="text" id="descCaio" placeholder="Descrição">
+<input type="number" id="valorCaioP" placeholder="Valor">
+<button onclick="addPessoal('caio')">Adicionar</button>
 
-<input id="desc1" placeholder="Descrição">
-<input id="val1" type="number" placeholder="Valor">
-<button onclick="addPessoal(1)">Adicionar</button>
-
-<ul id="lista1"></ul>
+<ul id="listaCaio"></ul>
 </div>
 
-<div class="person-box">
-<h2>🧍‍♀️ Pessoal - <span id="titulo2"></span></h2>
+<div class="person">
+<h3>Despesas Pessoais - Victoria</h3>
 
-<p>Entrada (sobra da casa): <strong id="entrada2">R$0</strong></p>
-<p>Despesas pessoais: <strong id="totalP2">R$0</strong></p>
-<p>Sobra Final: <strong id="final2">R$0</strong></p>
+<input type="text" id="descVictoria" placeholder="Descrição">
+<input type="number" id="valorVictoriaP" placeholder="Valor">
+<button onclick="addPessoal('victoria')">Adicionar</button>
 
-<input id="desc2" placeholder="Descrição">
-<input id="val2" type="number" placeholder="Valor">
-<button onclick="addPessoal(2)">Adicionar</button>
-
-<ul id="lista2"></ul>
+<ul id="listaVictoria"></ul>
 </div>
 
 </section>
 
 <section class="form-box">
 
-<h2>💰 Salários</h2>
+<h2>💰 Salários Fixos</h2>
 
-<input id="nome1" placeholder="Nome 1">
-<input id="valor1" type="number" placeholder="Valor">
-
-<input id="nome2" placeholder="Nome 2">
-<input id="valor2" type="number" placeholder="Valor">
+<input type="number" id="salarioCaio" placeholder="Salário Caio">
+<input type="number" id="salarioVictoria" placeholder="Salário Victoria">
 
 <button onclick="salvarSalarios()">Salvar</button>
 
@@ -106,10 +102,10 @@
 
 <h2>💸 Nova Conta</h2>
 
-<input id="descricao" placeholder="Descrição">
-<input id="valor" type="number" placeholder="Valor">
+<input type="text" id="descricao" placeholder="Descrição">
+<input type="number" id="valor" placeholder="Valor">
 
-<button onclick="addDespesa()">Adicionar</button>
+<button onclick="addDespesa()">Salvar Conta</button>
 
 </section>
 

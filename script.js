@@ -1,12 +1,13 @@
-const API_URL = "https://script.google.com/macros/s/AKfycby9vpt36jhnjbAIPqM1mDde4kY5IWN8UXyXrFeVk2uz75lt1S5wRlDw78ryq6qRMR4/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzT33TqCjIjm8ojUWm9bCY439hx7hyp5cIfedfU0FeDZ275osfJp0DvmG_UZIDheXns/exec";
 
+let salarioCaio = 0;
+let salarioVictoria = 0;
 let despesas = [];
-let salarios = [];
-let pessoais1 = [];
-let pessoais2 = [];
+let pessoaisCaio = [];
+let pessoaisVictoria = [];
 
-function moeda(v){
-return Number(v).toLocaleString("pt-BR",{
+function moeda(valor){
+return Number(valor).toLocaleString("pt-BR",{
 style:"currency",
 currency:"BRL"
 });
@@ -18,64 +19,53 @@ const req = await fetch(API_URL + "?t=" + Date.now());
 const dados = await req.json();
 
 despesas = dados.despesas || [];
-salarios = dados.salarios || [];
-pessoais1 = dados.pessoais1 || [];
-pessoais2 = dados.pessoais2 || [];
+pessoaisCaio = dados.pessoaisCaio || [];
+pessoaisVictoria = dados.pessoaisVictoria || [];
 
-render();
+salarioCaio = Number(dados.salarios[0]?.salario || 0);
+salarioVictoria = Number(dados.salarios[1]?.salario || 0);
+
+document.getElementById("salarioCaio").value = salarioCaio;
+document.getElementById("salarioVictoria").value = salarioVictoria;
+
+atualizar();
 }
 
-function render(){
+function atualizar(){
 
-let nome1 = salarios[0]?.nome || "";
-let nome2 = salarios[1]?.nome || "";
+let totalSalarios = salarioCaio + salarioVictoria;
 
-let valor1 = Number(salarios[0]?.salario || 0);
-let valor2 = Number(salarios[1]?.salario || 0);
-
-let totalSalarios = valor1 + valor2;
-let totalDespesas = despesas.reduce((a,b)=>a+Number(b.valor),0);
+let totalDespesas = despesas.reduce((t,i)=> t + Number(i.valor),0);
 
 let divisao = totalDespesas / 2;
 let sobraCasa = totalSalarios - totalDespesas;
 
-let sobraBase1 = valor1 - divisao;
-let sobraBase2 = valor2 - divisao;
+let sobraBaseCaio = salarioCaio - divisao;
+let sobraBaseVictoria = salarioVictoria - divisao;
 
-let totalP1 = pessoais1.reduce((a,b)=>a+Number(b.valor),0);
-let totalP2 = pessoais2.reduce((a,b)=>a+Number(b.valor),0);
+let totalPessoalCaio = pessoaisCaio.reduce((t,i)=> t + Number(i.valor),0);
+let totalPessoalVictoria = pessoaisVictoria.reduce((t,i)=> t + Number(i.valor),0);
 
-let sobraFinal1 = sobraBase1 - totalP1;
-let sobraFinal2 = sobraBase2 - totalP2;
+let sobraFinalCaio = sobraBaseCaio - totalPessoalCaio;
+let sobraFinalVictoria = sobraBaseVictoria - totalPessoalVictoria;
 
-// ===== CARDS PRINCIPAIS =====
 document.getElementById("salarios").innerText = moeda(totalSalarios);
 document.getElementById("despesas").innerText = moeda(totalDespesas);
 document.getElementById("sobra").innerText = moeda(sobraCasa);
 document.getElementById("divisao").innerText = moeda(divisao);
 
-document.getElementById("pessoa1").innerText = nome1;
-document.getElementById("pessoa2").innerText = nome2;
+document.getElementById("salCaio").innerText = moeda(salarioCaio);
+document.getElementById("salVictoria").innerText = moeda(salarioVictoria);
 
-document.getElementById("sobra1").innerText = moeda(sobraBase1);
-document.getElementById("sobra2").innerText = moeda(sobraBase2);
+document.getElementById("caioSobra").innerText = moeda(sobraBaseCaio);
+document.getElementById("vicSobra").innerText = moeda(sobraBaseVictoria);
 
-// ===== PESSOAL =====
-document.getElementById("titulo1").innerText = nome1;
-document.getElementById("titulo2").innerText = nome2;
+document.getElementById("caioFinal").innerText = moeda(sobraFinalCaio);
+document.getElementById("vicFinal").innerText = moeda(sobraFinalVictoria);
 
-document.getElementById("entrada1").innerText = moeda(sobraBase1);
-document.getElementById("entrada2").innerText = moeda(sobraBase2);
+renderLista("listaCaio", pessoaisCaio);
+renderLista("listaVictoria", pessoaisVictoria);
 
-document.getElementById("totalP1").innerText = moeda(totalP1);
-document.getElementById("totalP2").innerText = moeda(totalP2);
-
-document.getElementById("final1").innerText = moeda(sobraFinal1);
-document.getElementById("final2").innerText = moeda(sobraFinal2);
-
-// LISTAS
-renderLista("lista1", pessoais1);
-renderLista("lista2", pessoais2);
 renderDespesas();
 }
 
@@ -84,15 +74,12 @@ function renderLista(id, lista){
 let html = "";
 
 lista.slice().reverse().forEach(item=>{
-
 html += `
 <li>
 <span>${item.descricao}</span>
 <strong>${moeda(item.valor)}</strong>
-<button onclick="excluirPessoal('${item.id}')">🗑️</button>
 </li>
 `;
-
 });
 
 document.getElementById(id).innerHTML = html;
@@ -103,16 +90,12 @@ function renderDespesas(){
 let html = "";
 
 despesas.slice().reverse().forEach(item=>{
-
 html += `
 <li>
 <span>${item.descricao}</span>
 <strong>${moeda(item.valor)}</strong>
-<button onclick="editarConta('${item.id}','${item.descricao}','${item.valor}')">✏️</button>
-<button onclick="excluirConta('${item.id}')">🗑️</button>
 </li>
 `;
-
 });
 
 document.getElementById("gastos").innerHTML = html;
@@ -124,10 +107,8 @@ await fetch(API_URL,{
 method:"POST",
 body:JSON.stringify({
 tipo:"salario",
-nome1:document.getElementById("nome1").value,
-valor1:document.getElementById("valor1").value,
-nome2:document.getElementById("nome2").value,
-valor2:document.getElementById("valor2").value
+caio:Number(document.getElementById("salarioCaio").value),
+victoria:Number(document.getElementById("salarioVictoria").value)
 })
 });
 
@@ -141,7 +122,7 @@ method:"POST",
 body:JSON.stringify({
 tipo:"despesa",
 descricao:document.getElementById("descricao").value,
-valor:document.getElementById("valor").value
+valor:Number(document.getElementById("valor").value)
 })
 });
 
@@ -153,8 +134,13 @@ carregar();
 
 async function addPessoal(pessoa){
 
-let desc = document.getElementById("desc"+pessoa).value;
-let val = document.getElementById("val"+pessoa).value;
+let desc = pessoa === "caio"
+? document.getElementById("descCaio").value
+: document.getElementById("descVictoria").value;
+
+let valor = pessoa === "caio"
+? Number(document.getElementById("valorCaioP").value)
+: Number(document.getElementById("valorVictoriaP").value);
 
 await fetch(API_URL,{
 method:"POST",
@@ -162,58 +148,17 @@ body:JSON.stringify({
 tipo:"pessoal",
 pessoa:pessoa,
 descricao:desc,
-valor:val
+valor:valor
 })
 });
 
-document.getElementById("desc"+pessoa).value="";
-document.getElementById("val"+pessoa).value="";
-
-carregar();
+if(pessoa==="caio"){
+document.getElementById("descCaio").value="";
+document.getElementById("valorCaioP").value="";
+}else{
+document.getElementById("descVictoria").value="";
+document.getElementById("valorVictoriaP").value="";
 }
-
-async function excluirConta(id){
-
-await fetch(API_URL,{
-method:"POST",
-body:JSON.stringify({
-tipo:"excluirDespesa",
-id:id
-})
-});
-
-carregar();
-}
-
-async function excluirPessoal(id){
-
-await fetch(API_URL,{
-method:"POST",
-body:JSON.stringify({
-tipo:"excluirPessoal",
-id:id
-})
-});
-
-carregar();
-}
-
-async function editarConta(id,nome,valor){
-
-let novoNome = prompt("Nome:",nome);
-let novoValor = prompt("Valor:",valor);
-
-if(!novoNome) return;
-
-await fetch(API_URL,{
-method:"POST",
-body:JSON.stringify({
-tipo:"editarDespesa",
-id:id,
-descricao:novoNome,
-valor:novoValor
-})
-});
 
 carregar();
 }
