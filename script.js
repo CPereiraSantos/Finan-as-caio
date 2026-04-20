@@ -1,7 +1,34 @@
 const API_URL='https://script.google.com/macros/s/AKfycby9vpt36jhnjbAIPqM1mDde4kY5IWN8UXyXrFeVk2uz75lt1S5wRlDw78ryq6qRMR4/exec';
+
 let dados={despesas:[],pessoais:[],salarios:[]};
-const moeda=v=>Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
-async function carregar(){const r=await fetch(API_URL);dados=await r.json();render();}
-function salario(nome){let x=dados.salarios.find(i=>String(i.nome).toLowerCase()==nome);return x?Number(x.salario):0;}
-function render(){let cards=document.getElementById('cards');let c=document.getElementById('conteudo');cards.className='cards';if(PAGINA==='geral'){let total=dados.despesas.reduce((a,b)=>a+Number(b.valor||0),0);cards.innerHTML=`<div class='card'>Total Casa<br><strong>${moeda(total)}</strong></div>`;c.innerHTML=`<table><tr><th>Descrição</th><th>Valor</th></tr>${dados.despesas.map(x=>`<tr><td>${x.descrição||x.descricao}</td><td>${moeda(x.valor)}</td></tr>`).join('')}</table>`;}else{let sal=salario(PAGINA);let metade=dados.despesas.reduce((a,b)=>a+Number(b.valor||0),0)/2;let pes=dados.pessoais.filter(x=>String(x.nome).toLowerCase()==PAGINA).reduce((a,b)=>a+Number(b.valor||0),0);let sobra=sal-metade-pes;cards.innerHTML=`<div class='card'>Salário<br><strong>${moeda(sal)}</strong></div><div class='card'>Casa 50%<br><strong>${moeda(metade)}</strong></div><div class='card'>Pessoal<br><strong>${moeda(pes)}</strong></div><div class='card'>Saldo<br><strong class='${sobra>=0?'pos':'neg'}'>${moeda(sobra)}</strong></div>`;c.innerHTML=`<table><tr><th>Descrição</th><th>Valor</th></tr>${dados.pessoais.filter(x=>String(x.nome).toLowerCase()==PAGINA).map(x=>`<tr><td>${x.descrição||x.descricao}</td><td>${moeda(x.valor)}</td></tr>`).join('')}</table>`;}}
+
+const moeda=v=>Number(v||0).toLocaleString('pt-BR',{
+style:'currency',
+currency:'BRL'
+});
+
+async function carregar(){
+try{
+ const r=await fetch(API_URL);
+ dados=await r.json();
+ render();
+}catch(erro){
+ document.body.innerHTML += `
+ <div style="color:red;padding:20px">
+ Erro ao carregar dados da API
+ </div>`;
+ console.log(erro);
+}
+}
+
+function render(){
+let cards=document.getElementById('cards');
+let c=document.getElementById('conteudo');
+
+if(!cards || !c) return;
+
+cards.innerHTML='<div class="card">Sistema carregado</div>';
+c.innerHTML='<div class="card">Dados recebidos com sucesso</div>';
+}
+
 carregar();
