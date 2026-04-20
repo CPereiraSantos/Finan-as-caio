@@ -1,4 +1,4 @@
-const API_URL = "COLE_SEU_LINK_AQUI";
+const API_URL = "https://script.google.com/macros/s/AKfycby9vpt36jhnjbAIPqM1mDde4kY5IWN8UXyXrFeVk2uz75lt1S5wRlDw78ryq6qRMR4/exec";
 
 let despesas = [];
 let salarios = [];
