@@ -21,67 +21,34 @@ body {
 
 .container { max-width: 900px; margin: auto; }
 
-header { margin-bottom: 35px; }
+header { margin-bottom: 30px; }
 header h1 { font-size: 2.2rem; letter-spacing: -1px; }
-header p { color: var(--text-dim); }
 
 .glass {
     background: var(--glass);
     backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
     border: 1px solid var(--glass-border);
     border-radius: 24px;
     padding: 25px;
     margin-bottom: 20px;
 }
 
-/* Layout do Saldo */
-.saldo-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
+.saldo-wrapper { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+.saldo-field { flex: 1; min-width: 280px; }
+.saldo-field span, .saldo-resultado span, .card span { font-size: 0.7rem; font-weight: 700; color: var(--text-dim); display: block; margin-bottom: 10px; }
 
-.saldo-field { flex: 1; min-width: 250px; }
-.saldo-field span, .saldo-resultado span, .card span {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--text-dim);
-    display: block;
-    margin-bottom: 8px;
-    letter-spacing: 1px;
-}
-
-.saldo-field input {
-    width: 100%;
-    background: rgba(0,0,0,0.3);
-    border: 1px solid var(--glass-border);
-    padding: 15px;
-    border-radius: 12px;
-    color: white;
-    font-size: 1.4rem;
-    outline: none;
-}
+.input-with-button { display: flex; gap: 10px; }
+.input-with-button input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); padding: 15px; border-radius: 12px; color: white; font-size: 1.2rem; outline: none; }
 
 .saldo-resultado { text-align: right; }
-.saldo-resultado h2 { font-size: 2.8rem; font-weight: 800; color: var(--green); }
+#saldo-restante { font-size: 2.8rem; color: var(--green); font-weight: 800; }
 
-/* Tabela e Form */
 .input-group { display: flex; gap: 10px; flex-wrap: wrap; }
-.input-group input { 
-    background: rgba(255,255,255,0.05); 
-    border: 1px solid var(--glass-border); 
-    color: white; padding: 12px; border-radius: 10px; flex: 1;
-}
+.input-group input { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: white; padding: 12px; border-radius: 10px; flex: 1; }
 
-button { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+button { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; transition: 0.2s; }
 button:hover { filter: brightness(1.2); }
 
 table { width: 100%; border-collapse: collapse; }
-th { text-align: left; padding: 12px; color: var(--text-dim); font-size: 0.8rem; border-bottom: 1px solid var(--glass-border); }
-td { padding: 15px 12px; border-bottom: 1px solid var(--glass-border); }
-
+td, th { padding: 15px; border-bottom: 1px solid var(--glass-border); text-align: left; }
 .btn-del { background: none; border: 1px solid var(--red); color: var(--red); padding: 5px 10px; border-radius: 8px; cursor: pointer; }
-.btn-del:hover { background: var(--red); color: white; }

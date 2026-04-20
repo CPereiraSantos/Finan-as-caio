@@ -18,7 +18,10 @@
             <div class="saldo-wrapper">
                 <div class="saldo-field">
                     <span>💰 SEU SALDO ATUAL (SALÁRIO)</span>
-                    <input type="number" id="saldo-disponivel" placeholder="0,00" step="0.01" oninput="calcularRestante()">
+                    <div class="input-with-button">
+                        <input type="number" id="saldo-disponivel" placeholder="0,00" step="0.01">
+                        <button onclick="salvarSaldo()" id="btn-saldo">Registrar</button>
+                    </div>
                 </div>
                 <div class="saldo-resultado">
                     <span>📉 SALDO RESTANTE</span>
@@ -48,7 +51,7 @@
 
         <section class="lista-container glass">
             <div id="conteudo">
-                <p>A sincronizar com a nuvem...</p>
+                <p>A sincronizar dados...</p>
             </div>
         </section>
     </div>

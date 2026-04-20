@@ -3,27 +3,40 @@ let totalDespesasGlobal = 0;
 
 const moeda = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 
+// SALVAR O SALDO NA PLANILHA (ABA CONFIG)
+async function salvarSaldo() {
+    const valor = document.getElementById('saldo-disponivel').value;
+    const btn = document.getElementById('btn-saldo');
+    btn.innerText = "⌛";
+    
+    await fetch(API_URL, {
+        method: 'POST',
+        body: JSON.stringify({ acao: "SALVAR_SALDO", valor: valor })
+    });
+    
+    btn.innerText = "Salvo!";
+    setTimeout(() => btn.innerText = "Registrar", 2000);
+    carregar(); 
+}
+
 function calcularRestante() {
-    const salarioInput = document.getElementById('saldo-disponivel');
-    const salarioVal = Number(salarioInput.value) || 0;
-    
-    // Subtrai as despesas do salário inserido
-    const restante = salarioVal - totalDespesasGlobal;
-    
-    const elRestante = document.getElementById('saldo-restante');
-    elRestante.innerText = moeda(restante);
-    
-    // Muda a cor se o saldo for negativo
-    elRestante.style.color = restante < 0 ? "#ef4444" : "#10b981";
+    const inputVal = Number(document.getElementById('saldo-disponivel').value) || 0;
+    const restante = inputVal - totalDespesasGlobal;
+    const el = document.getElementById('saldo-restante');
+    el.innerText = moeda(restante);
+    el.style.color = restante < 0 ? "#ef4444" : "#10b981";
 }
 
 async function carregar() {
     try {
         const r = await fetch(API_URL);
-        const dados = await r.json();
-        renderizar(dados);
+        const res = await r.json();
+        
+        // Preenche o input com o saldo que está salvo na planilha
+        document.getElementById('saldo-disponivel').value = res.saldoInicial || 0;
+        renderizar(res.despesas || []);
     } catch (e) {
-        document.getElementById('conteudo').innerHTML = "<p style='color:red'>Erro ao carregar dados.</p>";
+        console.error("Erro ao carregar:", e);
     }
 }
 
@@ -52,14 +65,12 @@ async function deletar(id) {
 }
 
 function renderizar(lista) {
-    // Soma o total de todas as despesas na planilha
     totalDespesasGlobal = lista.reduce((acc, item) => acc + Number(item.valor || 0), 0);
     document.getElementById('total-geral').innerText = moeda(totalDespesasGlobal);
     
-    // Atualiza o saldo restante
     calcularRestante();
 
-    let html = `<table><thead><tr><th>DESPESA</th><th>VALOR</th><th style="text-align:right">AÇÃO</th></tr></thead><tbody>`;
+    let html = `<table><thead><tr><th>DESPESA</th><th>VALOR</th><th></th></tr></thead><tbody>`;
     lista.reverse().forEach(item => {
         html += `<tr>
             <td><strong>${item.despesa}</strong><br><small style="color:gray">${item.vencimento ? new Date(item.vencimento).toLocaleDateString('pt-BR') : ''}</small></td>
